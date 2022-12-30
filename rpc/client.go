@@ -1,8 +1,6 @@
 package rpc
 
 import (
-	"github.com/zhp12543/substrate/config"
-	"github.com/zhp12543/substrate/util"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -10,6 +8,8 @@ import (
 	codes "github.com/itering/scale.go"
 	"github.com/itering/scale.go/source"
 	"github.com/itering/scale.go/types"
+	"github.com/zhp12543/substrate/config"
+	"github.com/zhp12543/substrate/util"
 	"golang.org/x/crypto/blake2b"
 	"math/big"
 	"net/http"
@@ -104,14 +104,6 @@ func (client *Client) InitRuntimeVersion() error {
 	}
 	client.SpecVersion = specVersion
 	return nil
-}
-
-func (client *Client) GetFinalizedHead() (string, error) {
-	resp, err := client.Rpc.SendRequest("chain_getFinalizedHead", []interface{}{})
-	if err != nil {
-		return "", err
-	}
-	return string(resp), nil
 }
 
 func (client *Client) GetGenesisHash() (string, error) {

@@ -105,9 +105,9 @@ func (tx *Transaction) NewTxPayload(accPrefix, accSuffix []byte) (*TxPayLoad, er
 		return nil, err
 	}
 
-	if tx.BlockHeight == 0 {
+	/*if tx.BlockHeight == 0 {
 		return nil, errors.New("invalid block height")
-	}
+	}*/
 
 	tp.Era = GetEra(tx.BlockHeight)
 
@@ -172,7 +172,10 @@ func (tx *Transaction) NewTxPayload(accPrefix, accSuffix []byte) (*TxPayLoad, er
 const calPeriod = 64
 
 func GetEra(height uint64) []byte {
-	return []byte{0x00}
+	if height == 0 {
+		return []byte{0x00}
+	}
+
 	phase := height % calPeriod
 	index := uint64(6)
 	trailingZero := index - 1
@@ -253,9 +256,9 @@ func (tx *Transaction) GetSignTransaction(signature string, curveType CurveType,
 	}
 	signed = append(signed, sig...)
 
-	if tx.BlockHeight == 0 {
+	/*if tx.BlockHeight == 0 {
 		return "", errors.New("invalid block height")
-	}
+	}*/
 
 	signed = append(signed, GetEra(tx.BlockHeight)...)
 
