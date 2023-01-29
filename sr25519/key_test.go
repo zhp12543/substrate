@@ -4,9 +4,9 @@ import (
 	"encoding/hex"
 	"fmt"
 	sr25519 "github.com/ChainSafe/go-schnorrkel"
+	"github.com/btcsuite/btcutil/base58"
 	"github.com/zhp12543/substrate/config"
 	"github.com/zhp12543/substrate/ss58"
-	"github.com/btcsuite/btcutil/base58"
 	"golang.org/x/crypto/blake2b"
 	"testing"
 )
@@ -87,7 +87,7 @@ func TestSign(t *testing.T) {
 		return
 	}
 	var s [32]byte
-	copy(s[:],priv)
+	copy(s[:], priv)
 	fmt.Println(s)
 	key,err:=sr25519.NewMiniSecretKeyFromRaw(s)
 	if err != nil {
@@ -97,6 +97,8 @@ func TestSign(t *testing.T) {
 	pub,_:=key.ExpandEd25519().Public()
 	p:=pub.Encode()
 	fmt.Println(hex.EncodeToString(p[:]))
+
+	fmt.Println(Sign(priv, []byte("1234567999")))
 	//priv,err:=hex.DecodeString(secret)
 	//if err != nil {
 	//	panic(err)
@@ -138,6 +140,6 @@ func TestPrivateKeyToHex(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	isOK:=pub.Verify(&signs,sr25519.NewSigningContext([]byte("substrate"),[]byte("Test123")))
+	isOK, _:=pub.Verify(&signs,sr25519.NewSigningContext([]byte("substrate"),[]byte("Test123")))
 	fmt.Println(isOK)
 }
