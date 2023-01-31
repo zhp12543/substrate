@@ -9,6 +9,7 @@ import (
 	"github.com/zhp12543/substrate/ss58"
 	"github.com/zhp12543/substrate/util"
 	"math/big"
+	"strconv"
 	"strings"
 )
 
@@ -169,9 +170,60 @@ func (tx *Transaction) NewTxPayload(accPrefix, accSuffix []byte) (*TxPayLoad, er
 	return &tp, nil
 }
 
-const calPeriod = 64
+// 2的n次方，不能超过 1<<16
+const calPeriod = 256
+
+// https://github.com/polkadot-js/api/blob/ed426108f276daaef7e940b8cc773239c05c9b06/packages/types/src/extrinsic/ExtrinsicEra.ts#L28
+func getTrailingZeros(period uint64) uint64 {
+	// 其实是在算 calPeriod 是2的几次方
+	binary := strconv.FormatInt(int64(period), 2)
+	index := 0
+	for {
+		if binary[len(binary) - 1 - index] != 48 {
+			break
+		}
+		index++;
+	}
+	return uint64(index);
+}
 
 func GetEra(height uint64) []byte {
+	if height == 0 {
+		return []byte{0x00}
+	}
+
+	phase := height % calPeriod
+	index := getTrailingZeros(calPeriod)
+	//fmt.Println("get era index:", index)
+	trailingZero := index - 1
+
+	var encoded uint64
+	if trailingZero > 1 {
+		encoded = trailingZero
+	} else {
+		encoded = 1
+	}
+
+	if trailingZero < 15 {
+		encoded = trailingZero
+	} else {
+		encoded = 15
+	}
+
+	quantizeFactor := uint64(calPeriod >> 12)
+	if quantizeFactor < 1 {
+		quantizeFactor = 1
+	}
+
+	//fmt.Println("get era quantizeFactor:", quantizeFactor)
+	encoded += phase / quantizeFactor << 4
+	first := byte(encoded >> 8)
+	second := byte(encoded & 0xff)
+
+	return []byte{second, first}
+}
+
+func GetEra2(height uint64) []byte {
 	if height == 0 {
 		return []byte{0x00}
 	}
