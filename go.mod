@@ -3,9 +3,9 @@ module github.com/zhp12543/substrate
 go 1.17
 
 require (
-	github.com/ChainSafe/go-schnorrkel v1.0.0
+	github.com/ChainSafe/go-schnorrkel v0.0.0-20210318173838-ccb5cd955283
 	github.com/btcsuite/btcd/btcutil v1.1.3
-	github.com/btcsuite/btcutil v1.0.2
+	github.com/btcsuite/btcutil v0.0.0-20190425235716-9e5f4b9a998d
 	github.com/gorilla/websocket v1.5.0
 	github.com/itering/scale.go v1.5.8
 	github.com/mitchellh/mapstructure v1.5.0

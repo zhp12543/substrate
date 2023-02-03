@@ -76,10 +76,7 @@ func Sign(privateKey, message []byte)([]byte, error){
 		}
 
 		varifySigContent := sr25519.NewSigningContext([]byte("substrate"),message)
-		if ok, err := sk.Public().Verify(sig, varifySigContent); !ok {
-			if err != nil {
-				return nil, err
-			}
+		if ok := sk.Public().Verify(sig, varifySigContent); !ok {
 			return nil, errors.New("verify sign error")
 		}
 		sbs := sig.Encode()
@@ -93,10 +90,7 @@ func Sign(privateKey, message []byte)([]byte, error){
 		}
 
 		pub, _:= sk.Public()
-		if ok, err := pub.Verify(sig, sr25519.NewSigningContext([]byte("substrate"), message)); !ok{
-			if err != nil {
-				return nil, err
-			}
+		if ok := pub.Verify(sig, sr25519.NewSigningContext([]byte("substrate"), message)); !ok{
 			return nil, errors.New("verify sign error")
 		}
 		sbs := sig.Encode()

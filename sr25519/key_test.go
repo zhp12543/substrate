@@ -140,6 +140,6 @@ func TestPrivateKeyToHex(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	isOK, _:=pub.Verify(&signs,sr25519.NewSigningContext([]byte("substrate"),[]byte("Test123")))
+	isOK :=pub.Verify(&signs,sr25519.NewSigningContext([]byte("substrate"),[]byte("Test123")))
 	fmt.Println(isOK)
 }
