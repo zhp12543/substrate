@@ -23,13 +23,17 @@ func (t TxPayLoad) ToBytesString (methodPrefix []byte) string {
 	payload = append(payload, t.Nonce...)
 	payload = append(payload, t.Fee...)
 	if len(methodPrefix) > 0{
-		// dhx 添加00
+		// ksm 添加00
 		payload = append(payload, methodPrefix...)
 	}
 	payload = append(payload, t.SpecVersion...)
 	payload = append(payload,t.TransactionVersion...)
 	payload = append(payload, t.GenesisHash...)
 	payload = append(payload, t.BlockHash...)
+	if len(methodPrefix) > 0{
+		// ksm 添加00
+		payload = append(payload, methodPrefix...)
+	}
 
 	return hex.EncodeToString(payload)
 }

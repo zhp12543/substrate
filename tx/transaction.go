@@ -62,13 +62,13 @@ func (tx *Transaction) SetSpecVersionAndCallId(specVersion, transactionVersion u
 	tx.CallId = callId
 
 }
-func (tx *Transaction) CreateEmptyTransactionAndMessage(accPrefix, accSuffix []byte) (string, string, error) {
+func (tx *Transaction) CreateEmptyTransactionAndMessage(accPrefix, accSuffix, methodPrefix []byte) (string, string, error) {
 	tp, err := tx.NewTxPayload(accPrefix, accSuffix)
 	if err != nil {
 		return "", "", err
 	}
 
-	return tx.ToJSONString(), tp.ToBytesString(nil), nil
+	return tx.ToJSONString(), tp.ToBytesString(methodPrefix), nil
 }
 
 func (*Transaction) SignTransaction(private, message string) (string, error) {

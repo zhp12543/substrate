@@ -16,11 +16,11 @@ var (
 )
 
 func init()  {
-	var err error
+	/*var err error
 	client, err = rpc.New("http://127.0.0.1:9933/dot", "", "")
 	if err != nil{
 		panic(err)
-	}
+	}*/
 }
 
 func NewKeypairFromSeed(seed string) ([]byte, []byte, error) {
@@ -91,7 +91,7 @@ func TestNewMethodTransfer(t *testing.T) {
 	trans.SetGenesisHashAndBlockHash(genesisHash, blockHash, uint64(lastBlockNum))
 	trans.SetSpecVersionAndCallId(specVersion, txVersion, config.CallIdDot)
 
-	_, msg, err2 := trans.CreateEmptyTransactionAndMessage([]byte{0x00}, nil)
+	_, msg, err2 := trans.CreateEmptyTransactionAndMessage([]byte{0x00}, nil, nil)
 	fmt.Println("create tx:", msg, err2)
 
 	sige, err3 := trans.SignTransaction(hex.EncodeToString(fromPriv), msg)
